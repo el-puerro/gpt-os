@@ -1,33 +1,9 @@
-OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_entry)
-
 SECTIONS
 {
 	. = 1M;
-	.text :
-	{
-		*(.multiboot)
-		*(.text)
-	}
-
-	.rodata :
-	{
-		*(.rodata)
-	}
-
-	.data :
-	{
-		*(.data)
-	}
-
-	.bss :
-	{
-	    *(.bss)
-	    *(COMMON)
-	}
-
-	/DISCARD/ :
-	{
-		*(.note.gnu.build-id)
-	}
+	.text ALIGN(4096) : { *(.multiboot_header) *(.text) }
+	.rodata ALIGN(4096) : { *(.rodata) }
+	.data ALIGN(4096) : { *(.data) }
+	.bss ALIGN(4096) : { *(.bss) }
 }
