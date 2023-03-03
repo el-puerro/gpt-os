@@ -69,6 +69,7 @@ static void vga_printf(const char *fmt, ...)
 
 	while (*fmt) {
 		if (*fmt == '%') {
+			fmt++;
 			switch (*fmt) {
 			case 'd':
 				vga_putint(va_arg(args, int), 10);
