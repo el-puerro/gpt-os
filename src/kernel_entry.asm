@@ -28,9 +28,9 @@ kernel_entry:
 	; if the kernel unexpectedly returns, halt the CPU
 	cli
 
-.endloop:
+halt_loop:
 	halt
-	jmp .endloop
+	jmp halt_loop
 
 ; Setup the stack
 section .bss
