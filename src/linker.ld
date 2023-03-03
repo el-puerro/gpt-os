@@ -1,9 +1,9 @@
+OUTPUT_FORMAT(elf32-i386)
 ENTRY(kernel_entry)
 
 SECTIONS
 {
 	. = 1M;
-
 	.text :
 	{
 		*(.multiboot)
@@ -22,7 +22,8 @@ SECTIONS
 
 	.bss :
 	{
-		*(.bss)
+	    *(.bss)
+	    *(COMMON)
 	}
 
 	/DISCARD/ :
