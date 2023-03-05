@@ -2,6 +2,7 @@
  * created 2023-03-05 @ chatGPT
  *
  * Updates:
+ * 	2023-03-05 @ el-puerro: add debug output to interrupt handlers
  *
  */
 
@@ -9,6 +10,7 @@
 #define INTERRUPTS_H
 
 #include <stdint.h>
+#include "vga.h"
 
 /* IDT entry structure */
 struct idt_entry {
@@ -39,106 +41,127 @@ static interrupt_handler_t interrupt_handlers[NUM_INTERRUPTS];
 /* Interrupt handler function definitions */
 static inline void divide_error_handler(void) {
 	asm volatile("cli");
+	vga_printf("divide error handler\n");
 	while (1) {}
 }
 
 static inline void debug_handler(void) {
 	asm volatile("cli");
+	vga_printf("debug handler\n");
 	while (1) {}
 }
 
 static inline void nmi_handler(void) {
 	asm volatile("cli");
+	vga_printf("nmi handler\n");
 	while (1) {}
 }
 
 static inline void breakpoint_handler(void) {
 	asm volatile("cli");
+	vga_printf("breakpoint handler\n");
 	while (1) {}
 }
 
 static inline void overflow_handler(void) {
 	asm volatile("cli");
+	vga_printf("overflow handler\n");
 	while (1) {}
 }
 
 static inline void bounds_check_handler(void) {
 	asm volatile("cli");
+	vga_printf("bounds check handler\n");
 	while (1) {}
 }
 
 static inline void invalid_opcode_handler(void) {
 	asm volatile("cli");
+	vga_printf("invalid opcode handler\n");
 	while (1) {}
 }
 
 static inline void device_not_available_handler(void) {
 	asm volatile("cli");
+	vga_printf("device not available handler\n");
 	while (1) {}
 }
 
 static inline void double_fault_handler(void) {
 	asm volatile("cli");
+	vga_printf("double fault handler\n");
 	while (1) {}
 }
 
 static inline void coprocessor_segment_overrun_handler(void) {
 	asm volatile("cli");
+	vga_printf("coprocessor segment overrun handler\n");
 	while (1) {}
 }
 
 static inline void invalid_tss_handler(void) {
 	asm volatile("cli");
+	vga_printf("invalid tss handler\n");
 	while (1) {}
 }
 
 static inline void segment_not_present_handler(void) {
 	asm volatile("cli");
+	vga_printf("segment not present handler\n");
 	while (1) {}
 }
 
 static inline void stack_segment_fault_handler(void) {
 	asm volatile("cli");
+	vga_printf("stack segment fault handler\n");
 	while (1) {}
 }
 
 static inline void general_protection_fault_handler(void) {
 	asm volatile("cli");
+	vga_printf("general protection fault handler\n");
 	while (1) {}
 }
 
 static inline void page_fault_handler(void) {
 	asm volatile("cli");
+	vga_printf("page fault handler\n");
 	while (1) {}
 }
 
 static inline void x87_floating_point_handler(void) {
 	asm volatile("cli");
+	vga_printf("x87 floating point handler\n");
 	while (1) {}
 }
 
 static inline void alignment_check_handler(void) {
 	asm volatile("cli");
+	vga_printf("alignment check handler\n");
 	while (1) {}
 }
 
 static inline void machine_check_handler(void) {
 	asm volatile("cli");
+	vga_printf("machine check handler\n");
 	while (1) {}
 }
 
 static inline void simd_floating_point_handler(void) {
 	asm volatile("cli");
+	vga_printf("simd floating point handler\n");
 	while (1) {}
 }
 
 static inline void virtualization_handler(void) {
 	asm volatile("cli");
+	vga_printf("virtualisation handler\n");
 	while (1) {}
 }
 
 static inline void security_exception_handler(void) {
 	asm volatile("cli");
+	vga_printf("security exception handler\n");
 	while (1) {}
 }
 
