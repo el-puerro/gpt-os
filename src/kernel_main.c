@@ -15,6 +15,8 @@ void kernel_main()
 {
 	interrupts_init();
 	vga_printf("Hello World!\n");
-	vga_printf("The answer is %d.\n", 42);
+	for (int i = 0; i < 256; i++) {
+		vga_printf("The answer is %d.\n", i);
+	}
 }
 
