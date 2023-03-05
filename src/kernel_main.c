@@ -8,10 +8,12 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include "include/vga.h"
+#include "include/interrupts.h"
 
 
 void kernel_main()
 {
+	interrupts_init();
 	vga_printf("Hello World!\n");
 	vga_printf("The answer is %d.\n", 42);
 }

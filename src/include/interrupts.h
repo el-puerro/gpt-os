@@ -35,27 +35,6 @@ typedef void (*interrupt_handler_t)(void);
 static struct idt_entry idt[NUM_INTERRUPTS];
 static interrupt_handler_t interrupt_handlers[NUM_INTERRUPTS];
 
-/* IDT initialization function */
-static inline void interrupts_init(void) {
-	// Set up the IDT entries with the interrupt handlers
-	for (int i = 0; i < NUM_INTERRUPTS; i++) {
-		// Set the interrupt handler
-		interrupt_handler_t handler = interrupt_handlers[i];
-		uint32_t handler_addr = (uint32_t)handler;
-		idt[i].offset_1 = handler_addr & 0xffff;
-		idt[i].selector = 0x08;  // code segment in GDT
-		idt[i].zero = 0;
-		idt[i].type_attr = 0x8e;  // present, kernel-mode, 32-bit interrupt gate
-		idt[i].offset_2 = (handler_addr >> 16) & 0xffff;
-	}
-
-	// Load the IDT descriptor
-	struct idt_descriptor idt_desc = {
-		.limit = sizeof(idt) - 1,
-		.base = (uint32_t)&idt[0]
-	};
-	asm volatile("lidt %0" : : "m"(idt_desc));
-}
 
 /* Interrupt handler function definitions */
 static inline void divide_error_handler(void) {
@@ -164,3 +143,50 @@ static inline void security_exception_handler(void) {
 }
 
 
+// Define an array of interrupt handler functions
+static interrupt_handler_t interrupt_handlers[NUM_INTERRUPTS] = {
+	divide_error_handler,
+	debug_handler,
+	nmi_handler,
+	breakpoint_handler,
+	overflow_handler,
+	bounds_check_handler,
+	invalid_opcode_handler,
+	device_not_available_handler,
+	double_fault_handler,
+	coprocessor_segment_overrun_handler,
+	invalid_tss_handler,
+	segment_not_present_handler,
+	stack_segment_fault_handler,
+	general_protection_fault_handler,
+	page_fault_handler,
+	x87_floating_point_handler,
+	alignment_check_handler,
+	machine_check_handler,
+	simd_floating_point_handler,
+	virtualization_handler,
+	security_exception_handler
+};
+
+// Set up the IDT entries with the interrupt handlers
+static inline void interrupts_init(void) {
+	for (int i = 0; i < NUM_INTERRUPTS; i++) {
+		// Set the interrupt handler
+		interrupt_handler_t handler = interrupt_handlers[i];
+		uint32_t handler_addr = (uint32_t)handler;
+		idt[i].offset_1 = handler_addr & 0xffff;
+		idt[i].selector = 0x08;  // code segment in GDT
+		idt[i].zero = 0;
+		idt[i].type_attr = 0x8e;  // present, kernel-mode, 32-bit interrupt gate
+		idt[i].offset_2 = (handler_addr >> 16) & 0xffff;
+	}
+
+	// Load the IDT descriptor
+	struct idt_descriptor idt_desc = {
+		.limit = sizeof(idt) - 1,
+		.base = (uint32_t)&idt[0]
+	};
+	asm volatile("lidt %0" : : "m"(idt_desc));
+}
+
+#endif /* INTERRUPTS_H */
