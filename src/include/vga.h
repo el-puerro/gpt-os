@@ -1,4 +1,10 @@
-/* vga.h */
+/* vga.h
+ * created 2023-03-02 @ ChatGPT
+ *
+ * Updates:
+ *  2023-03-03 @ ChatGPT: added VGA color constants
+ *  2023-03-04 @ ChatGPT: added VGA buffer struct and functions
+ */
 
 #ifndef _VGA_H
 #define _VGA_H
