@@ -4,6 +4,7 @@
 ; updates:
 ;	2023-03-03 @ el-puerro: make bootable by grub
 ; 	2023-03-05 @ chatGPT: GDT initialization
+;	2023-03-06 @ chatGPT: Paging initialization
 
 [bits 32]
 
@@ -17,6 +18,7 @@ multiboot_header:
 ; kernel entry point
 global kernel_entry
 extern kernel_main
+extern enable_paging
 
 ; GDT initialization
 gdt_start:
@@ -52,7 +54,11 @@ kernel_entry:
 	; initialize GDT
 	lgdt [gdt_descriptor]
 
-	; call kernel_main
+	; TODO: fix
+	; enable paging
+	; call enable_paging
+
+	; call kernel_main()
 	call kernel_main
 
 	; if the kernel unexpectedly returns, halt the cpu
