@@ -19,4 +19,3 @@ void kernel_main()
 		vga_printf("The answer is %d.\n", i);
 	}
 }
-
