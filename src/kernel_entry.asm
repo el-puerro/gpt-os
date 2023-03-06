@@ -18,7 +18,7 @@ multiboot_header:
 ; kernel entry point
 global kernel_entry
 extern kernel_main
-extern enable_paging
+extern paging_init
 
 ; GDT initialization
 gdt_start:
@@ -56,7 +56,7 @@ kernel_entry:
 
 	; TODO: fix
 	; enable paging
-	; call enable_paging
+	call paging_init
 
 	; call kernel_main()
 	call kernel_main
