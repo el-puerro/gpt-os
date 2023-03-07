@@ -15,7 +15,7 @@
 
 // Constants
 #define PMM_FRAME_SIZE PAGE_SIZE
-#define PMM_FRAME_ALIGN PMM_FRAME_SIZE
+#define PMM_FRAME_ALIGN PAGE_SIZE
 
 // External symbols from linker script
 extern uint32_t __kernel_start;
@@ -54,9 +54,26 @@ void pmm_init(void)
 		pmm_bitmap[i] = 0;
 	}
 
-	// Mark all memory used by kernel as used in the bitmap
-	for (uint32_t addr = (uint32_t)&kernel_start; addr < kernel_end; addr += PMM_FRAME_SIZE) {
+	// Mark memory used by kernel as used in the bitmap
+	for (uint32_t addr = kernel_start; addr < kernel_end; addr += PMM_FRAME_SIZE) {
 		PMM_SET_BIT(PMM_FRAME_INDEX(addr));
+	}
+
+	// Get the amount of physical memory installed on the machine
+	uint32_t mem_size = 0;
+	if (*(uint16_t*)0x8000) {
+		mem_size = *(uint16_t*)0x8000;
+	} else {
+		mem_size = 1024; // Assume 1 MiB of memory if 0x8000 is not valid
+	}
+	pmm_nframes = mem_size * 1024 / PMM_FRAME_SIZE;
+
+	// Mark memory used by BIOS and kernel data structures as used in the bitmap
+	for (size_t i = 0; i < pmm_nframes; ++i) {
+		uint32_t addr = i * PMM_FRAME_SIZE;
+		if (addr < kernel_end || addr >= 0x100000) {
+			PMM_SET_BIT(i);
+		}
 	}
 
 	// Initialize the placement address
@@ -64,6 +81,7 @@ void pmm_init(void)
 	vga_printf("Page Frame Allocator initialized!\n");
 	vga_printf("Starting addr = 0x%x\n", placement_address);
 }
+
 
 void* pmm_alloc_frame(void)
 {
