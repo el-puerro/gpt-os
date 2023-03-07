@@ -1,3 +1,9 @@
+/* paging.h - Higher half kernel + paging initialisation
+ * created 2023-03-05 @ chatGPT
+ * 
+ * Updates: 
+ *	2023-03-07 @ chatGPT: fixed bootloop issue
+ */
 #ifndef PAGING_H
 #define PAGING_H
 
