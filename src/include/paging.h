@@ -48,7 +48,7 @@ void paging_init(void)
 	}
 
 	// Create page directory entry for page table
-	page_directory[768] = (uint32_t)page_table | PAGE_DIR_PRESENT | PAGE_DIR_RW;
+	page_directory[0] = (uint32_t)page_table | PAGE_DIR_PRESENT | PAGE_DIR_RW;
 
 	// Set up page directory
 	uint32_t pd_addr = (uint32_t)page_directory;

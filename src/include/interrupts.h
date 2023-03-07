@@ -210,6 +210,7 @@ static inline void interrupts_init(void) {
 		.base = (uint32_t)&idt[0]
 	};
 	asm volatile("lidt %0" : : "m"(idt_desc));
+	vga_printf("Interrupts initialized!\n");
 }
 
 #endif /* INTERRUPTS_H */
