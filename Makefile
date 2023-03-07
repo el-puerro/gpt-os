@@ -42,5 +42,5 @@ kernel.iso: kernel.elf
 	grub-mkrescue -o $@ iso
 
 run: kernel.iso
-	qemu-system-i386 -cdrom $<
+	qemu-system-i386 -m 1024M -cdrom $<
 

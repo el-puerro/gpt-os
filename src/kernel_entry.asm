@@ -18,7 +18,7 @@ multiboot_header:
 ; kernel entry point
 global kernel_entry
 extern kernel_main
-extern enable_paging
+; extern paging_init
 
 ; GDT initialization
 gdt_start:
@@ -47,19 +47,15 @@ gdt_descriptor:
 section .text
 
 kernel_entry:
-
 	; set up stack pointer
 	mov esp, stack_space + KERNEL_STACK_SIZE
 
 	; initialize GDT
 	lgdt [gdt_descriptor]
 
-	; TODO: fix
-	; enable paging
-	; call enable_paging
+	; call paging_init ; function to init higher half kernel + paging
 
-	; call kernel_main()
-	call kernel_main
+	call kernel_main ; main kernel function (C code)
 
 	; if the kernel unexpectedly returns, halt the cpu
 	cli

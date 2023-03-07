@@ -9,14 +9,12 @@
 #include <stdarg.h>
 #include "include/vga.h"
 #include "include/interrupts.h"
+#include "include/paging.h"
 
 
 void kernel_main()
 {
+	paging_init();
 	interrupts_init();
-	vga_printf("Hello World!\n");
-	for (int i = 0; i < 256; i++) {
-		vga_printf("The answer is %d.\n", i);
-	}
+	vga_printf("This OS is written almost completely by ChatGPT!\n");
 }
-
