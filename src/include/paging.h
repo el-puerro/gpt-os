@@ -30,7 +30,7 @@ static uint32_t page_directory[PAGE_DIRECTORY_SIZE] __attribute__((aligned(PAGE_
 static uint32_t page_table[PAGE_TABLE_SIZE] __attribute__((aligned(PAGE_SIZE)));
 
 // Paging initialization function
-void paging_init(void) 
+void paging_init(void)
 {
 	// Map first 1MB with identity mapping
 	uint32_t i;
@@ -43,7 +43,7 @@ void paging_init(void)
 	extern uint32_t __kernel_end;
 	uint32_t kernel_start = (uint32_t)&__kernel_start;
 	uint32_t kernel_end = (uint32_t)&__kernel_end;
-	for (; kernel_start <= kernel_end; kernel_start += PAGE_SIZE) {
+	for (; kernel_start < kernel_end; kernel_start += PAGE_SIZE) {
 		page_table[kernel_start / PAGE_SIZE] = kernel_start | PAGE_PRESENT | PAGE_RW;
 	}
 
@@ -60,9 +60,10 @@ void paging_init(void)
 	asm volatile("mov %%cr0, %0" : "=r" (cr0_val));
 	cr0_val |= 0x80000000;
 	asm volatile("mov %0, %%cr0" :: "r" (cr0_val));
-	
+
 	// Print debug information
 	vga_printf("Paging initialized\n");
 }
+
 
 #endif // PAGING_H
