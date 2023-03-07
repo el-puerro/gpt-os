@@ -14,7 +14,7 @@
 
 void kernel_main()
 {
-	//paging_init();
+	paging_init();
 	interrupts_init();
 	vga_printf("This OS is written almost completely by ChatGPT!\n");
 }

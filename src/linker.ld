@@ -2,7 +2,7 @@ ENTRY(kernel_entry)
 
 SECTIONS
 {
-  . = 0xC0100000;
+  . = 1M;
 
   .text ALIGN(4096) : { *(.multiboot_header) *(.text) }
   . = ALIGN(4096);

@@ -38,14 +38,13 @@ void paging_init(void)
 		page_table[i / PAGE_SIZE] = i | PAGE_PRESENT | PAGE_RW;
 	}
 
-	// Map higher half kernel
-	for (; i < 0x200000; i += PAGE_SIZE) {
-		page_table[i / PAGE_SIZE] = (i - 0x100000 + 0xC0100000) | PAGE_PRESENT | PAGE_RW;
-	}
-
-	// Map memory above 1MB
-	for (; i < 0x1000000; i += PAGE_SIZE) {
-		page_table[i / PAGE_SIZE] = i | PAGE_PRESENT | PAGE_RW;
+	// Map kernel code
+	extern uint32_t __kernel_start;
+	extern uint32_t __kernel_end;
+	uint32_t kernel_start = (uint32_t)&__kernel_start;
+	uint32_t kernel_end = (uint32_t)&__kernel_end;
+	for (; kernel_start <= kernel_end; kernel_start += PAGE_SIZE) {
+		page_table[kernel_start / PAGE_SIZE] = kernel_start | PAGE_PRESENT | PAGE_RW;
 	}
 
 	// Create page directory entry for page table
@@ -55,15 +54,13 @@ void paging_init(void)
 	uint32_t pd_addr = (uint32_t)page_directory;
 	uint32_t cr3_val = pd_addr | PAGE_DIR_PRESENT | PAGE_DIR_RW;
 	asm volatile("mov %0, %%cr3" :: "r" (cr3_val));
-	vga_printf("Page directory loaded into CR3 register\n");
 
 	// Enable paging
 	uint32_t cr0_val;
 	asm volatile("mov %%cr0, %0" : "=r" (cr0_val));
 	cr0_val |= 0x80000000;
 	asm volatile("mov %0, %%cr0" :: "r" (cr0_val));
-	vga_printf("Paging enabled\n");
-
+	
 	// Print debug information
 	vga_printf("Paging initialized\n");
 }
