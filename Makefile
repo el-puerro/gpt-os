@@ -35,12 +35,15 @@ kernel.iso: kernel.elf
 	echo 'set timeout=0' 			> iso/boot/grub/grub.cfg
 	echo 'set default=0'			>> iso/boot/grub/grub.cfg
 	echo ''					>> iso/boot/grub/grub.cfg
+	echo 'GRUB_TERMINAL=console'		>> iso/boot/grub/grub.cfg
 	echo 'menuentry "gpt-os" {'		>> iso/boot/grub/grub.cfg
 	echo '	multiboot /boot/kernel.elf' 	>> iso/boot/grub/grub.cfg
 	echo '	boot'				>> iso/boot/grub/grub.cfg
 	echo '}'				>> iso/boot/grub/grub.cfg
 	grub-mkrescue -o $@ iso
 
+
+# OLD: qemu-system-i386 -m 1024M -cdrom $<
 run: kernel.iso
-	qemu-system-i386 -m 1024M -cdrom $<
+	qemu-system-i386 -nographic -serial mon:stdio -m 1024M -cdrom $<
 

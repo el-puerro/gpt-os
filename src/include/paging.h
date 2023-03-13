@@ -50,7 +50,7 @@ void paging_init(void)
 	uint32_t kernel_start = (uint32_t)&__kernel_start;
 	uint32_t kernel_end = (uint32_t)&__kernel_end;
 	for (; kernel_start < kernel_end; kernel_start += PAGE_SIZE) {
-		page_table[kernel_start / PAGE_SIZE] = kernel_start | PAGE_PRESENT | PAGE_RW;
+		page_table[(kernel_start >> 12) & 0x3ff] = kernel_start | PAGE_PRESENT | PAGE_RW;	
 	}
 
 	// Create page directory entry for page table
